@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nidhogg-deployment
+  labels:
+    app: nidhogg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nidhogg
+  template:
+    metadata:
+      labels:
+        app: nidhogg
+    spec:
+      serviceAccountName: nidhogg-sa
+      containers:
+      - name: nidhogg
+        image: quay.io/uswitch/nidhogg:{{ .Values.image.tag }}
+        args:
+        - "-config-file=/etc/data/config.yaml"
+        volumeMounts:
+        - name: ro-vol
+          mountPath: "/etc/data"
+          readOnly: true
+      volumes:
+      - name: ro-vol
+        configMap:
+          name: nidhogg-configmap
+
