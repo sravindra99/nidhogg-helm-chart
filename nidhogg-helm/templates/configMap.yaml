@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nidhogg-configmap
+data:
+  myvalue: "Hello World"
+  config.yaml: |
+    nodeSelector:
+      node-role.kubernetes.io/node
+    daemonsets:
+      - name: kiam
+        namespace: kube-system  
